@@ -34,8 +34,13 @@ app.get('/update/:hum/:temp/:hi/:moist', function (req, res){
     var hour = currentDate.getHours(); // GMT +0
     var minute = currentDate.getMinutes();
     var second = currentDate.getSeconds();
+
+    let real_hour = hour + 8;
+    if(real_hour >= 24){
+      real_hour = real_hour - 24;
+    }
   
-    var dateString = date + "-" +(month + 1) + "-" + year + " " + (hour+8) + ":" + minute +  ":" + second;
+    var dateString = date + "-" +(month + 1) + "-" + year + " " + (real_hour) + ":" + minute +  ":" + second;
   
     waktu =  dateString;
   
@@ -76,16 +81,21 @@ exports.addTime = functions.database.ref('/monitor')
       var minute = currentDate.getMinutes();
       var second = currentDate.getSeconds();
     
-      var dateString = date + "-" +(month + 1) + "-" + year + " " + (hour+8) + ":" + minute +  ":" + second;
+      let real_hour = hour + 8;
+      if(real_hour >= 24){
+        real_hour = real_hour - 24;
+      }
+    
+      var dateString = date + "-" +(month + 1) + "-" + year + " " + (real_hour) + ":" + minute +  ":" + second;
     
       waktu =  dateString;
       console.log(waktu);
 
       return db.ref('/log/' + waktu).set(original)    
-      // .then(function() {
-      //   return db.ref('monitor').once('value');
+      .then(function() {
+        return db.ref('/last_update').set(waktu)    
       
-      // }).then(function(snapshot){
+      });//.then(function(snapshot){
         
       //   let data = snapshot.val();
       //   console.log(data);

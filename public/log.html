@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>SaFar - Smart Farm</title>
+
+  <!-- local CSS -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="css/heroic-features.css" rel="stylesheet">
+
+</head>
+
+<body>
+<!-- update the version number as needed -->
+<script src="/__/firebase/7.3.0/firebase-app.js"></script>
+<!-- include only the Firebase features as you need -->
+<!-- <script defer src="/__/firebase/7.3.0/firebase-auth.js"></script> -->
+<script src="/__/firebase/7.3.0/firebase-database.js"></script>
+<!-- <script defer src="/__/firebase/7.3.0/firebase-messaging.js"></script> -->
+<!-- <script defer src="/__/firebase/7.3.0/firebase-storage.js"></script> -->
+<!-- initialize the SDK after all desired features are loaded -->
+<script src="/__/firebase/init.js"></script>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">SaFar <span class="mx-2">|</span> Smart Farm</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item  active">
+            <a class="nav-link" href="#">Log</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">About</a>
+          </li>          
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  
+  <!-- Page Content -->
+  <div class="container">
+
+    <div class="row my-5">
+      <h1>Data Log</h1>
+    </div>
+    
+    <!-- Page Features -->
+    <div class="row text-center mh-100">
+
+        <table class="table table-striped mb-3">
+            <thead>
+              <tr>
+                <th>Update Time (WITA)</th>
+                <th>Temperature</th>
+                <th>Humidity</th>
+                <th>Soil Moisture</th>
+                <th>Heat Index</th>
+                <th>Pump</th>
+                <th>Lamp</th>
+              </tr>
+            </thead>
+            <tbody id="tabelBody">  
+            </tbody>
+          </table>
+        
+      
+    </div>
+    <!-- /.row -->
+
+  </div>
+  <!-- /.container -->
+
+  <!-- Footer -->
+  <footer class="py-5 bg-dark">
+    <div class="container">
+      <div class="text-center">
+          <img class="img-thumbnail rounded-circle"  width="100" height="100" src="image/logo_man.jpg" alt="">
+          <p class="m-0 text-center text-white">Presented By :</p>
+          <h3 class="m-0 text-center text-white">MAN 2 Makassar</h3>
+      </div>
+      
+      <p class="m-0 text-center text-white">Copyright &copy; Smart Farm 2019</p>
+    </div>
+    <!-- /.container -->
+  </footer>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script>
+      const db = firebase.database();
+    </script>
+  <script>
+    db.ref('log').orderByKey().limitToLast(15).once('value').then(function(snapshot){
+
+      snapshot.forEach(function(satu){
+          let satuData = satu.val();
+          $('#tabelBody').append(`
+            <tr> 
+                <td>` + satu.key + `</td>
+                <td>` + satuData.temperature + ` &#8451;</td>
+                <td>` + satuData.humidity + ` %</td>
+                <td>` + satuData.soil_moisture + `</td>
+                <td>` + satuData.heat_index + ` &#8451;</td>
+                <td>` + satuData.pump + `</td>
+                <td>` + satuData.lamp + `</td>                
+            </tr>
+          `);
+        });
+     
+      
+    });
+    
+  </script>
+
+</body>
+
+</html>
